@@ -1,6 +1,6 @@
 {
 	"name": "cmdmix",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"description": "Butt in that value to your line of commands",
 	"main": "index.js",
 	"bin": {
