@@ -1,0 +1,15 @@
+{
+  "name": "cmdmix",
+  "version": "1.0.0",
+  "description": "Butt in that value to your line of commands",
+  "main": "index.js",
+  "bin": {
+   "cmdmix": "./index.js"
+ },
+ "scripts": {
+   "test": "echo 'Woops: no test specified' && exit 1"
+ },
+  "repository": "https://github.com/mathiasrw/cmdmix.git",
+  "author": "Mathias Rangel Wulff <m@rawu.dk>",
+  "license": "MIT"
+}
