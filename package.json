@@ -1,8 +1,7 @@
 {
 	"name": "cmdmix",
-	"version": "1.2.0",
+	"version": "1.3.0",
 	"description": "Butt in that value to your line of commands",
-	"main": "index.js",
 	"bin": {
 		"cmdmix": "./index.js"
 	},
@@ -12,7 +11,9 @@
 		"test-format": "yarn pretty-since-push --list-different || echo 'Please correct file formatting using `yarn format` and try again.'",
 		"pretty-since-push": "{ git diff --name-only --diff-filter=d origin/master ; git diff --name-only --diff-filter=d --staged origin/master ; } | sort | uniq | grep -E '\\.(scss|css|js|ts|vue|json)$' | xargs prettier",
 		"commit": "cmdmix 'git add --all && git commit -m \"%1\"'",
-		"goto": "cmdmix 'git fetch && git checkout %1 && git pull'"
+		"goto": "cmdmix 'git fetch && git checkout %1 && git pull'",
+		"bump": "bump --tag 'v%s'",
+		"prepublish": "yarn bump"
 	},
 	"repository": "https://github.com/mathiasrw/cmdmix.git",
 	"author": "Mathias Rangel Wulff <m@rawu.dk>",
