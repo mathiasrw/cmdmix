@@ -1,26 +1,22 @@
 {
 	"name": "cmdmix",
-	"version": "1.1.1",
+	"version": "1.2.0",
 	"description": "Butt in that value to your line of commands",
 	"main": "index.js",
 	"bin": {
 		"cmdmix": "./index.js"
 	},
 	"scripts": {
-		"test": "echo 'Woops: no test specified' && exit 1",
-		"fmt": "yarn pretty-commit --write",
+		"test": "echo 'Ehhh - this has been manually tested pretty well - kind of... you know...' && exit 1",
 		"format": "yarn pretty-since-push --write",
-		"format-all": "yarn pretty-all --write",
+		"test-format": "yarn pretty-since-push --list-different || echo 'Please correct file formatting using `yarn format` and try again.'",
 		"pretty-since-push": "{ git diff --name-only --diff-filter=d origin/master ; git diff --name-only --diff-filter=d --staged origin/master ; } | sort | uniq | grep -E '\\.(scss|css|js|ts|vue|json)$' | xargs prettier",
-		"pretty-commit": "{ git diff --name-only  --diff-filter=d ; git diff --name-only  --diff-filter=d --staged ; } | sort | uniq | grep -E '\\.(scss|css|js|ts|vue|json)$' | xargs prettier",
-		"pretty-all": "git ls-tree --full-tree --name-only -r HEAD | grep -E '\\.(scss|css|js|ts|vue|json)$' | xargs prettier"
+		"commit": "cmdmix 'git add --all && git commit -m \"%1\"'",
+		"goto": "cmdmix 'git fetch && git checkout %1 && git pull'"
 	},
 	"repository": "https://github.com/mathiasrw/cmdmix.git",
 	"author": "Mathias Rangel Wulff <m@rawu.dk>",
 	"license": "MIT",
-	"dependencies": {
-		"prettier": "^1.19.1"
-	},
 	"prettier": {
 		"useTabs": true,
 		"printWidth": 100,
@@ -30,6 +26,7 @@
 		"trailingComma": "es5"
 	},
 	"devDependencies": {
-		"version-bump-prompt": "^5.0.6"
+		"version-bump-prompt": "^5.0.6",
+		"prettier": "^1.19.1"
 	}
 }
