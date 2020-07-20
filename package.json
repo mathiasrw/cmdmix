@@ -1,6 +1,6 @@
 {
 	"name": "cmdmix",
-	"version": "2.0.1",
+	"version": "2.0.2",
 	"description": "Butt in that value to your line of commands",
 	"bin": {
 		"cmdmix": "./index.js"
@@ -27,7 +27,7 @@
 		"trailingComma": "es5"
 	},
 	"devDependencies": {
-		"version-bump-prompt": "^5.0.6",
-		"prettier": "^1.19.1"
+		"prettier": "2.0.5",
+		"version-bump-prompt": "6.0.6"
 	}
 }
