@@ -48,7 +48,7 @@ cmds = cmds.map((cmd) => {
 const cmd = cmds.join('%');
 
 try {
-	//console.log(cmd);
+	if (!!+process.env.PRINT_CMD) console.warn('$ ' + cmd);
 	const childProcess = execSync(cmd, {
 		stdio: [process.stdin, process.stdout, process.stderr],
 		shell: '/bin/bash',

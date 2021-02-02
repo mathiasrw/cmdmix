@@ -60,6 +60,8 @@ will let `yarn goto something` execute as
     $ git fetch && git checkout feature/something && git pull
     
 (if you like feature branch names inlcuding spaces please wrap the branch name prameter with `\"...\"`)
+
+
     
 
 ### Keys
@@ -119,6 +121,12 @@ instead of wasting your time writing
 #### I need my `%2`
 
 Ok - so for some reason you rneed to write `%2` without it getting replaced. Plesae use `%%2` in your command to execute as `%2` without it being replaced. 
+
+## Keep an eye on thinkgs
+
+You can have the final command printed that is about to be executed by setting the `PRINT_CMD` enviroment boolean flag (1 or 0)
+
+    PRINT_CMD=1 cmdmix 'deno run -A ./%1.run.ts'
     
     
 ## Limitations
