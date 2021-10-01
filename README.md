@@ -1,7 +1,7 @@
 # cmdmix
 _Butt in that value to your line of commands_
 
-A very thin layer letting your place dynamic values into a (yarn) command from parameters. Useful to omit how yarn only appends to the end of the command.
+A very thin layer letting you place dynamic values into a (yarn) command from parameters. Useful to omit how yarn only appends to the end of the command.
 
 ## TL;DR
 
