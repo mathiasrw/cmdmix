@@ -122,9 +122,9 @@ instead of wasting your time writing
 
 Ok - so for some reason you rneed to write `%2` without it getting replaced. Plesae use `%%2` in your command to execute as `%2` without it being replaced. 
 
-## Keep an eye on thinkgs
+## Keep an eye on things
 
-You can have the final command printed that is about to be executed by setting the `PRINT_CMD` enviroment boolean flag (1 or 0)
+You can have the final command printed before it gets executed by setting the `PRINT_CMD` enviroment boolean flag (1 or 0). This is usefull to create transparency and when debugging. 
 
     PRINT_CMD=1 cmdmix 'deno run -A ./%1.run.ts'
     
