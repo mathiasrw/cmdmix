@@ -27,7 +27,7 @@
 		"trailingComma": "es5"
 	},
 	"devDependencies": {
-		"prettier": "2.0.5",
+		"prettier": "2.7.1",
 		"version-bump-prompt": "6.0.6"
 	}
 }
