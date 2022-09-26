@@ -28,6 +28,6 @@
 	},
 	"devDependencies": {
 		"prettier": "2.7.1",
-		"version-bump-prompt": "6.0.6"
+		"version-bump-prompt": "6.1.0"
 	}
 }
