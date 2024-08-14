@@ -1,33 +1,63 @@
 {
 	"name": "cmdmix",
-	"version": "2.2.2",
+	"version": "3.0.0",
+	"main": "src/index.ts",
+	"license": "MIT",
+	"typings": "src/types.d.ts",
 	"description": "Execute a template CLI command with dynamic values",
+	"author": "Mathias Rangel Wulff m@rawu.dk",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/mathiasrw/cmdmix.git"
+	},
 	"bin": {
-		"cmdmix": "./index.js"
+		"cmdmix": "build/cmdmix.min.js",
+		"cmdmix_debug": "build/cmdmix.js"
 	},
 	"scripts": {
-		"test": "echo 'Ehhh - this has been manually tested pretty well - kind of... you know...' && exit 1",
-		"format": "yarn pretty-since-push --write",
-		"test-format": "yarn pretty-since-push --list-different || echo 'Please correct file formatting using `yarn format` and try again.'",
-		"pretty-since-push": "{ git diff --name-only --diff-filter=d origin/master ; git diff --name-only --diff-filter=d --staged origin/master ; } | sort | uniq | grep -E '\\.(scss|css|js|ts|vue|json)$' | xargs prettier",
-		"commit": "cmdmix 'git add --all && git commit -m \"%1\"'",
-		"goto": "cmdmix 'git fetch && git checkout %1 && git pull'",
-		"bump": "bump --tag 'v%s'",
-		"prepublish": "yarn bump"
-	},
-	"repository": "https://github.com/mathiasrw/cmdmix.git",
-	"author": "Mathias Rangel Wulff <m@rawu.dk>",
-	"license": "MIT",
-	"prettier": {
-		"useTabs": true,
-		"printWidth": 100,
-		"singleQuote": true,
-		"arrowParens": "always",
-		"bracketSpacing": false,
-		"trailingComma": "es5"
+		"exe": "deno run --unstable -A mod.ts",
+		"inspect": "echo Go to Chrome and open: chrome://inspect #\n deno run --unstable -A  --inspect-brk mod.ts --debug ",
+		"debug": "deno bundle src/params.ts build/params.js && deno bundle src/mix.ts  build/mix.js && serve .",
+		"test": "deno test --fail-fast src/ test/",
+		"test-e2e": "yarn test && yarn test-cli",
+		"test-cli": "yarn install-g && yarn test-cli-only",
+		"test-cli-only": "bash test/cli/run.sh",
+		"prebuild": "shx rm -fr build && shx mkdir build",
+		"build": "deno run -A esbuild.ts",
+		"postbuild": "rexreplace '(?<=^#!/usr/bin/env node)' 'nl+`!!Object.hasOwn || (Object.hasOwn = Object.call.bind(Object.hasOwnProperty));`' -j build/*.*",
+		"install-g": "yarn build && npm uninstall cmdmix -g && npm install -g . ",
+		"fmt": "deno fmt src/ --options-use-tabs --options-line-width 120",
+		"prepublishOnly": "yarn is-git-clean && yarn bump",
+		"postpublish": "git push --tag && git push && (open https://github.com/mathiasrw/cmdmix/releases || 1)",
+		"test-format": "yarn pretty --list-different || (shx echo 'Please correct file formatting using `npm run format` and try again.' && exit 1)",
+		"format": "yarn pretty --write",
+		"pretty": "prettier --ignore-unknown '**/*'",
+		"prepare": "husky install"
 	},
 	"devDependencies": {
 		"prettier": "3.3.3",
-		"version-bump-prompt": "6.1.0"
+		"esbuild": "0.13.9",
+		"husky": "^7.0.4",
+		"rexreplace": "^7.0.3",
+		"serve": "12.0.1",
+		"shx": "0.3.3",
+		"version-bump-prompt": "6.1.0",
+		"yarn": "1.22.17"
+	},
+	"prettier": {
+		"useTabs": true,
+		"printWidth": 120,
+		"singleQuote": true,
+		"endOfLine": "lf",
+		"bracketSpacing": false
+	},
+	"keywords": [
+		"CLI",
+		"command",
+		"pipe",
+		"xargs"
+	],
+	"lint-staged": {
+		"*.*": "prettier --ignore-unknown --write"
 	}
 }

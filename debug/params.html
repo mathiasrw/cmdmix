@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Debug params</title>
+		<style>
+			body {
+				margin: 20%;
+			}
+		</style>
+		<!--script src="../build/params.js" type="text/javascript"></script-->
+	</head>
+	<body>
+		<tt><h1>See the console</h1></tt>
+		<script type="module">
+			import config from '../build/params.js';
+
+			globalThis.config = (args) => {
+				const out = config(args, (msg) => {
+					throw msg;
+				});
+
+				console.log(JSON.stringify(out, null, 2));
+			};
+
+			console.log(`config('-o echo a b'.split(/\\s+/))`);
+		</script>
+	</body>
+</html>

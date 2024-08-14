@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Debug params</title>
+		<style>
+			body {
+				margin: 20%;
+			}
+		</style>
+		<!--script src="../build/params.js" type="text/javascript"></script-->
+	</head>
+	<body>
+		<tt><h1>See the console</h1></tt>
+		<script type="module">
+			import mix from '../build/mix.js';
+
+			globalThis.mix = (cmd, _args, conf = {}) => {
+				const args = _args.split(/\s+/);
+
+				const out = mix(conf, cmd, args, (msg) => {
+					throw msg;
+				});
+
+				console.log(JSON.stringify(out, null, 2));
+			};
+
+			console.log(`mix('echo {1}', 'a', {print:1})`);
+		</script>
+	</body>
+</html>
