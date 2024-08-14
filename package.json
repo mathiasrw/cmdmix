@@ -1,7 +1,7 @@
 {
 	"name": "cmdmix",
-	"version": "2.1.1",
-	"description": "Butt in that value to your line of commands",
+	"version": "2.2.1",
+	"description": "Execute a template CLI command with dynamic values",
 	"bin": {
 		"cmdmix": "./index.js"
 	},

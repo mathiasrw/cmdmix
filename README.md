@@ -1,134 +1,171 @@
-# cmdmix
-_Butt in that value to your line of commands_
+Your text is well-written, but there are a few minor spelling and typographical corrections that can be made. Here's the revised version with corrections:
 
-A very thin layer letting you place dynamic values into a (yarn) command from parameters. Useful to omit how yarn only appends to the end of the command.
+---
+
+# CMDmix
+_Execute a template CLI command with dynamic values_
+
+CMDmix is a very thin layer that allows you to treat CLI commands as templates and provide input parameters before executing the final command. This enhances the capabilities of `package.json` scripts and other command-line tools like Yarn and npm.
 
 ## TL;DR
 
 #### Install
 
-    yarn add cmdmix --dev
-
+```bash
+bun add cmdmix --dev
+yarn add cmdmix --dev
+npm install cmdmix --dev
+pnpm install cmdmix --dev
+```
 
 #### Smart to use because
 
-Make a trivial sequence of commands easy to type out. 
+CMDmix reduces the chance of errors by allowing you to simplify complex commands and make them easier to type out.
 
-Examples:
+😒                                                  | 😎
+----------------------------------------------------|------------------------------
+`git add --all && git commit -m 'Will fix TEC-13'`  | `yarn commit Will fix TEC-13`
+`git fetch && git checkout feature/develop && git pull` | `yarn goto develop`
 
-- 😎 `yarn commit Will fix #13` 
-- 😒 `git add --all && git commit -m 'Will fix #13'`
-- 😎 `yarn goto something` 
-- 😒 `git fetch && git checkout feature/something && git pull`
+CMDmix lets you control where input parameters are placed into your commands before executing them.
 
-
-    
-    
-    
-## Why
-
-Let's say you often check out new feature branches in a git repo and you are tired of always writing `git fetch` before you do a `git checkout myBranch`. Yarn can help you out because you can have the first part as a script in package.json and when you add the branch name to the yarn command it gets added. So in your package.json you have `"goto": "git fetch && git checkout"`
-
-now running 
-
-    $ yarn goto myBranch
-    
-will execute 
-
-    $ git fetch && git checkout myBranch
-
-That is great, and yarn can be used to automate many things. (A more relevant example has been included in the package.json of this repo where `yarn format` will format the content of files and `yarn test-format` will verify if everything is formatted having both commands rely on the same code for identifying what files to consider.)  
-
-  However, if the branch has already been checked out, you will have to do a `git pull` to make sure you have the last changes from the origin. So we need a way to run something like
-
-    $ git fetch && git checkout X && git pull
-    
-by typing 
-
-	$ yarn goto X
-    
-    
-    
-## What
-
-Using cmdmix you can place dynamic parameters where you want into a command. Having the following in your package.json 
-
-    "goto": "cmdmix 'git fetch && git checkout feature/%1 && git pull'"
-
-will let `yarn goto something` execute as 
-
-    $ git fetch && git checkout feature/something && git pull
-    
-(if you like feature branch names inlcuding spaces please wrap the branch name prameter with `\"...\"`)
-
-
-    
-
-### Keys
-
-The keys `%1` to `%9` can be used to point to a parameter. 
-
-
-#### Order of keys
-
-The number of the key indicates the order of the keys - not the placement of the parameter. This means that we have the following apparently quirky but purposefully intended usage:
-
-```
+```sh
 $ cmdmix 'echo %1 %2' a b
 > a b
 
-$ cmdmix 'echo %3 %7' a b
-> a b
-
-$ cmdmix 'echo %9 %4' a b
+$ cmdmix 'echo %2 %1' a b
 > b a
-
 ```
 
-Reason: Imagine having a long command with many keys and then you need to remove one. Usually you would need to rename all the following. With this setup you can remove one key in the middle and just change how you use the command. 
+## Why
 
+Let's say you often check out new feature branches in a git repo and you are tired of always writing `git fetch` before you do a `git checkout myBranch`. Yarn can help you out because you can have the first part as a script in `package.json`, and when you add the branch name to the Yarn command, it gets added. So in your `package.json`, you have `"goto": "git fetch && git checkout"`
 
-#### The last key
+Now, running:
 
-If there are more parameters then keys to be replaced in the command, the last key will treat the rest of the parameters as a single string of text. 
-
-```
-$ cmdmix 'echo %1' a b
-> a b
-
-$ cmdmix 'echo %2' a b
-> a b
-
-$ cmdmix 'echo %9 %4' a b c
-> b c a
-
-```
-
-This way we can type freely without thinking about `'...'` or `"..."`. 
-
-**Example:** Having 
-
-    "commit": "cmdmix 'git add --all && git commit -m \"%1\"'"
+    $ yarn goto myBranch
     
-will let you type 
+will execute:
 
-    yarn commit This is my best feature ever...
+    $ git fetch && git checkout myBranch
+
+That is great, and Yarn can be used to automate many things. (A more relevant example has been included in the `package.json` of this repo, where `yarn format` will format the content of files and `yarn test-format` will verify if everything is formatted, having both commands rely on the same code for identifying what files to consider.)
+
+However, if the branch has already been checked out, you will have to do a `git pull` to make sure you have the latest changes from the origin. So, we need a way to run something like:
+
+    $ git fetch && git checkout X && git pull
     
-instead of wasting your time writing
+by typing:
 
-    git add --all && git commit -m 'This is my best feature ever...'
+    $ yarn goto X
+
+## What
+
+Using CMDmix, you can place dynamic parameters into a command template before executing it.
+
+Having the following in your `package.json`:
+
+    "goto": "cmdmix 'git fetch && git checkout feature/%1 && git pull'"
+
+will let `yarn goto something` execute as:
+
+    $ git fetch && git checkout feature/something && git pull
+        
+_If you would like to support branch names that include spaces, please wrap the branch name parameter with quotes and escape them because of the JSON in `package.json`: \"%1\"._
+
+### Keys
+
+The keys `%1` to `%9` can be used in the command template to insert input parameters.
 
 #### I need my `%2`
 
-Ok - so for some reason you rneed to write `%2` without it getting replaced. Plesae use `%%2` in your command to execute as `%2` without it being replaced. 
+Ok—so for some reason, you need to write `%2` without it getting replaced. Please use `%%2` in your command to execute without `%2` being replaced.
 
-## Keep an eye on things
+#### Order of keys
 
-You can have the final command printed before it gets executed by setting the `PRINT_CMD` enviroment boolean flag (1 or 0). This is usefull to create transparency and when debugging. 
+The number of the key indicates the order of the keys—not the placement of the parameter. This means that we have the following apparently quirky but purposefully intended usage:
 
-    PRINT_CMD=1 cmdmix 'deno run -A ./%1.run.ts'
-    
-    
+```sh
+$ cmdmix 'echo %1 %2' a b
+> a b
+
+$ cmdmix 'echo %4 %8' a b
+> a b
+
+$ cmdmix 'echo %2 %1' a b
+> b a
+```
+
+Reason: Imagine having a long command with many keys and then needing to remove one. Usually, you would need to rename all the following. With this setup, you can remove one key in the middle and just change how you use the command.
+
+#### The highest key is greedy
+
+If there are more parameters than keys to be replaced in the command, the highest key will treat the rest of the parameters as a single string of text.
+
+```sh
+$ cmdmix 'echo %2 %1' a b c d   # Highest placeholder is greedy
+> b c d a
+```
+
+This enables the user to type long texts without thinking about quotes.
+
+### In short
+1. Placeholders are numbered `%1` to `%9`.
+2. Numbers indicate replacement order, not parameter position. (So `'echo %1 %2' a b` gives the same result as `'echo %2 %1' a b`)
+3. When there are more input parameters than placeholders, the last argument will contain all the rest of the parameters concatenated by space.
+4. Use `%%n` to output a literal `%n` (where n is a number).
+
+## Configuration
+
+The following configuration makes it possible to change the behaviour of CMDmix. For historical reasons, the configuration is set via environment variables. They are provided before the command, can't have spaces next to the `=`, and you can use multiple by separating them with spaces.
+
+### Print command before executing
+
+Set `CMDMIX_PRINT_CMD` to 1 to print the fully constructed command before it runs—handy for debugging or transparency.
+
+```bash
+CMDMIX_PRINT_CMD=1 yarn goto develop
+```
+
+### Minimum number of input parameters
+
+Normally, CMDmix will allow for any number of input parameters. If you would like it to error in case there are fewer input parameters than `X`, then set `CMDMIX_MIN_INPUT` to `X`.
+
+```bash
+CMDMIX_MIN_INPUT=1 yarn goto develop
+```
+
+### Strict
+
+Normally, CMDmix will allow for any number of parameters. If you would like it to error in case there are not the exact same number of placeholders and parameters provided, then set `CMDMIX_STRICT` to 1.
+
+```bash
+CMDMIX_STRICT=1 yarn goto develop
+```
+
+### Exit code
+
+Normally, CMDmix will exit using the exit code of the command executed. If you would like the exit code to indicate success even if the command did not run successfully, set `CMDMIX_IGNORE_ERROR` to 1.
+
+```bash
+CMDMIX_IGNORE_ERROR=1 yarn goto develop
+```
+
+This is useful for fault-tolerant scripts in CI/CD pipelines. Note that the exit code will always indicate an error if there is no command provided to run or if STRING or MIN are not adhered to.
+
+### Custom Shell
+
+Use `CMDMIX_SHELL` to set the path to execute via a specific shell:
+
+```bash
+CMDMIX_SHELL=/bin/zsh yarn goto my-feature
+```
+
 ## Limitations
 
-Please note that the current implementation will give unexpected results if the parameters provided contains `%n` where n i a positive integer smaller or equal to the larget key number. 
+- Unexpected results may occur if parameters contain `%n` where `n` is smaller than or equal to the largest placeholder number.
+- Maximum of 9 placeholders (`%1` to `%9`).
+
+### Ideas
+
+- `cat urls.txt | npx cmdmix "wget {{0}}" 
