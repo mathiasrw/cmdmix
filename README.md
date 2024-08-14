@@ -1,8 +1,5 @@
-Your text is well-written, but there are a few minor spelling and typographical corrections that can be made. Here's the revised version with corrections:
-
----
-
 # CMDmix
+
 _Execute a template CLI command with dynamic values_
 
 CMDmix is a very thin layer that allows you to treat CLI commands as templates and provide input parameters before executing the final command. This enhances the capabilities of `package.json` scripts and other command-line tools like Yarn and npm.
@@ -22,10 +19,10 @@ pnpm install cmdmix --dev
 
 CMDmix reduces the chance of errors by allowing you to simplify complex commands and make them easier to type out.
 
-😒                                                  | 😎
-----------------------------------------------------|------------------------------
-`git add --all && git commit -m 'Will fix TEC-13'`  | `yarn commit Will fix TEC-13`
-`git fetch && git checkout feature/develop && git pull` | `yarn goto develop`
+| 😒                                                      | 😎                            |
+| ------------------------------------------------------- | ----------------------------- |
+| `git add --all && git commit -m 'Will fix TEC-13'`      | `yarn commit Will fix TEC-13` |
+| `git fetch && git checkout feature/develop && git pull` | `yarn goto develop`           |
 
 CMDmix lets you control where input parameters are placed into your commands before executing them.
 
@@ -44,7 +41,7 @@ Let's say you often check out new feature branches in a git repo and you are tir
 Now, running:
 
     $ yarn goto myBranch
-    
+
 will execute:
 
     $ git fetch && git checkout myBranch
@@ -54,7 +51,7 @@ That is great, and Yarn can be used to automate many things. (A more relevant ex
 However, if the branch has already been checked out, you will have to do a `git pull` to make sure you have the latest changes from the origin. So, we need a way to run something like:
 
     $ git fetch && git checkout X && git pull
-    
+
 by typing:
 
     $ yarn goto X
@@ -70,7 +67,8 @@ Having the following in your `package.json`:
 will let `yarn goto something` execute as:
 
     $ git fetch && git checkout feature/something && git pull
-        
+
+
 _If you would like to support branch names that include spaces, please wrap the branch name parameter with quotes and escape them because of the JSON in `package.json`: \"%1\"._
 
 ### Keys
@@ -110,6 +108,7 @@ $ cmdmix 'echo %2 %1' a b c d   # Highest placeholder is greedy
 This enables the user to type long texts without thinking about quotes.
 
 ### In short
+
 1. Placeholders are numbered `%1` to `%9`.
 2. Numbers indicate replacement order, not parameter position. (So `'echo %1 %2' a b` gives the same result as `'echo %2 %1' a b`)
 3. When there are more input parameters than placeholders, the last argument will contain all the rest of the parameters concatenated by space.
@@ -168,4 +167,4 @@ CMDMIX_SHELL=/bin/zsh yarn goto my-feature
 
 ### Ideas
 
-- `cat urls.txt | npx cmdmix "wget {{0}}" 
+- `cat urls.txt | npx cmdmix "wget {{0}}"
