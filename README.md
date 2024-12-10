@@ -73,7 +73,7 @@ _If you would like to support branch names that include spaces, please wrap the 
 
 ### Keys
 
-The keys `%1` to `%9` can be used in the command template to insert input parameters.
+The keys `%1` to `%9` can be used in the command template to insert input parameters. 
 
 #### I need my `%2`
 
@@ -81,7 +81,9 @@ Ok—so for some reason, you need to write `%2` without it getting replaced. Ple
 
 #### Order of keys
 
-The number of the key indicates the order of the keys—not the placement of the parameter. This means that we have the following apparently quirky but purposefully intended usage:
+The number of the key indicates the order of the keys—not the placement of the parameter. 
+The first argument is assigned to the lowest-numbered placeholder present, the second argument to the second lowest-numbered placeholder, and so forth.
+This means that we have the following apparently quirky but purposefully intended usage:
 
 ```sh
 $ cmdmix 'echo %1 %2' a b
@@ -90,7 +92,7 @@ $ cmdmix 'echo %1 %2' a b
 $ cmdmix 'echo %4 %8' a b
 > a b
 
-$ cmdmix 'echo %2 %1' a b
+$ cmdmix 'echo %8 %4' a b
 > b a
 ```
 
@@ -98,7 +100,7 @@ Reason: Imagine having a long command with many keys and then needing to remove 
 
 #### The highest key is greedy
 
-If there are more parameters than keys to be replaced in the command, the highest key will treat the rest of the parameters as a single string of text.
+If there are more parameters than keys to be replaced in the command, the highest key will treat the rest of the parameters as a single string of text joined by space. 
 
 ```sh
 $ cmdmix 'echo %2 %1' a b c d   # Highest placeholder is greedy
@@ -110,7 +112,7 @@ This enables the user to type long texts without thinking about quotes.
 ### In short
 
 1. Placeholders are numbered `%1` to `%9`.
-2. Numbers indicate replacement order, not parameter position. (So `'echo %1 %2' a b` gives the same result as `'echo %2 %1' a b`)
+2. THe number indicates replacement order, not parameter position. (So `'echo %1 %2' a b` gives the same result as `'echo %2 %1' a b`)
 3. When there are more input parameters than placeholders, the last argument will contain all the rest of the parameters concatenated by space.
 4. Use `%%n` to output a literal `%n` (where n is a number).
 
@@ -167,4 +169,6 @@ CMDMIX_SHELL=/bin/zsh yarn goto my-feature
 
 ### Ideas
 
-- `cat urls.txt | npx cmdmix "wget {{0}}"
+- Support reading from pipe `echo Hi | npx cmdmix "echo {{1}}"`
+- Support repeated runs from nl data `cat urls.txt | npx cmdmix "wget {{1}}"`
+
